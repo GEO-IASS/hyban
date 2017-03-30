@@ -36,18 +36,25 @@ mod = (cc[:, 1] + cc[:, 0] * mspec[:, np.newaxis]).T
 res = specs - mod
 
 # -- get the RGB image
-rgb = make_rgb8(cube.data, cube.waves)
+rgb  = make_rgb8(cube.data, cube.waves, scl=5.)
+rgb2 = make_rgb8(cube.data, cube.waves, scl=2.5)
 
 # -- make some plots
 figure(1)
 clf()
 imshow(res, aspect=2, cmap="viridis", clim=(-30, 30))
 
-figure(3, figsize=(5 / 0.45, 5))
+figure(2, figsize=(5 / 0.45, 5))
 subplots_adjust(0, 0, 1, 1)
 clf()
 axis("off")
 xlim(409, 832)
 ylim(1509, 1086)
 imshow(rgb, aspect=0.45)
+
+figure(3, figsize=(5 / 0.45, 5))
+subplots_adjust(0, 0, 1, 1)
+clf()
+axis("off")
+imshow((rgb2/255.)**0.75, aspect=0.45)
 
