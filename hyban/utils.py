@@ -141,11 +141,10 @@ def hyper_viz(cube, img, asp=0.45):
     return
 
 
-def make_rgb8(data,waves,lam=[610.,540.,475.],scl=2.5):
-    ind = [np.argmin(np.abs(waves-clr)) for clr in lam]
-    rgb = data[ind]
+def make_rgb8(data, waves, lam=[610., 540., 475.], scl=2.5):
+    ind = [np.abs(waves - clr).argmin() for clr in lam]
+    rgb = data[ind].transpose(1, 2, 0)
     wgt = rgb.mean(0).mean(0)
-    scl = scl*wgt[0]/wgt * 2.**8/2.**12
+    scl = scl * wgt[0] / wgt * 2.**8 / 2.**12
 
-    return (rgb*scl).clip(0,255).astype(np.uint8).transpose(1,2,0)
-
+    return (rgb * scl).clip(0, 255).astype(np.uint8)
