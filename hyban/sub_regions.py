@@ -61,5 +61,5 @@ if __name__=="__main__":
     # -- get patch spectra
     for ii in range(len(flist)):
         specs = get_patch_spectra(flist[ii], rr, cr)
-        oname = os.path.join("..", "output", "{0}.csv".format(dates[ii]))
+        oname = os.path.join("..", "output", "{0}_regs.csv".format(dates[ii]))
         np.savetxt(oname, np.vstack([waves, specs]).T, delimiter=",")
