@@ -3,11 +3,11 @@
 
 import os
 import numpy as np
-from utils import read_hyper
+from utils import read_hyper, read_header
 
 def get_patch_spectra(fname, rr, cr):
     """
-    Get the patch spectra and write to a csv file.
+    Get the patch spectra.
 
     :param fname:
         The name of the data cube (e.g., data.raw).
@@ -35,21 +35,31 @@ def get_patch_spectra(fname, rr, cr):
 
 if __name__=="__main__":
 
-    # # -- June 4, 6, 8, 10 at 15:01
-    # dpath = os.path.join(os.path.expanduser("~"),"vegetation","data")
-    # flist = ["veg_01125.raw", "veg_01207.raw", "veg_01289.raw", 
-    #          "veg_01370.raw"]
-    # dates = ["060416_1500", "060616_1500", "060816_1500", "061016_1500"]
+    # -- define the dates 
+    #    May 31, June 2, 4, 6  11:00
+    #    April 6th, 5pm
+    dpath  = os.path.join("..", "data")
+    flist  = [os.path.join(dpath, i) for i in 
+              ["veg_00945.raw", "veg_01027.raw", "veg_01109.raw", 
+               "veg_01191.raw"]]
+    flist += [os.path.join(os.path.expanduser("~"), "vnir_new", 
+                           "040616_full-0001.raw")]
+    dates  = ["053116_1100", "060216_1100", "060416_1100", "060616_1100", 
+              "040616_1700"]
 
-    # -- May 31, June 2,4,6  11:00
-    dpath = os.path.join("..", "data")
-    flist = ["veg_00945.raw", "veg_01027.raw", "veg_01109.raw", 
-             "veg_01191.raw", ]
-    dates = ["053116_1100", "060216_1100", "060416_1100", "060616_1100"]
+    # -- define the regions
+    rr = ((996, 1015), (1016, 1035), (1036, 1055), (996, 1015), (1016, 1035), 
+          (1036, 1055), (996, 1015), (1016, 1035), (1036, 1055), (996, 1015), 
+          (1016, 1035), (1036, 1055), (1135, 1150))
+    cr = ((802, 812), (802, 812), (802, 812), (813, 823), (813, 823), 
+          (813, 823), (824, 834), (824, 834), (824, 834), (835, 845), 
+          (835, 845), (835, 845), (978, 994))
+
+    # -- get the wavelengths
+    waves = read_header(flist[0].replace("raw", "hdr"))["waves"]
 
     # -- get patch spectra
-    
-
-    for ii,tfile in enumerate(flist):
-        oname = tfile.replace(".raw","_{0}.csv".format(dates[ii]))
-        get_patch_spectra(os.path.join(dpath,tfile),oname)
+    for ii in range(len(flist)):
+        specs = get_patch_spectra(flist[ii], rr, cr)
+        oname = os.path.join("..", "output", "{0}.csv".format(dates[ii]))
+        np.savetxt(oname, np.vstack([waves, specs]).T, delimiter=",")
