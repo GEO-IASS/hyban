@@ -148,3 +148,20 @@ def make_rgb8(data, waves, lam=[610., 540., 475.], scl=2.5):
     scl = scl * wgt[0] / wgt * 2.**8 / 2.**12
 
     return (rgb * scl).clip(0, 255).astype(np.uint8)
+
+
+
+def get_scan_conditions():
+    """
+    Get weather conditions for scans.
+
+    Returns
+    -------
+    sc : pd.DataFrame
+        A pandas DataFrame containing scan conditions.
+    """
+
+    # -- set the scan conditions file and return data frame
+    fname = os.path.join("..", "ext", "scan_conditions.csv")
+
+    return pd.read_csv(fname, parse_dates=["time"])
