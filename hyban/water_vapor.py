@@ -52,8 +52,10 @@ if __name__=="__main__":
                "veg_01191.raw"]]
     flist += [os.path.join(os.path.expanduser("~"), "vnir_new", 
                            "040616_full-0001.raw")]
+    flist += [os.path.join(os.path.expanduser("~"), "vnir_new", 
+                           "dark_052617_1201.raw")]
     dates  = ["053116_1100", "060216_1100", "060416_1100", "060616_1100", 
-              "040616_1700"]
+              "040616_1700", "052617_1201_dark"]
 
     # -- get patch spectra
     for ii, tfile in enumerate(flist):
