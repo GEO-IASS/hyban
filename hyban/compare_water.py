@@ -26,6 +26,7 @@ dum     = [i.axis("off") for i in ax]
 dum     = [i.imshow(j, aspect=0.45) for i, j in zip(ax, rgbs)]
 dum     = [i.set_title(j) for i, j in zip(ax, sc.time)]
 fig.canvas.draw()
+fig.savefig("../output/scan_examples.png", clobber=True)
 
 # -- set the spatial indices
 rr = [1110, 1460]
@@ -34,5 +35,10 @@ cc = [1355, 1430]
 # -- get the spectra
 specs = [i.data[:, rr[0]:rr[1], cc[0]:cc[1]].mean(-1).mean(-1) for i in cubes]
 
-# figure()
-# plot(cubes[0].waves, i) for i in specs]
+fig2, ax2 = plt.subplots()
+[ax2.plot(cubes[0].waves * 1e-3, i) for i in specs]
+ax2.set_xlabel("wavelength [micron]")
+ax2.set_ylabel("intensity [arb units]")
+ax2.grid(1)
+fig2.canvas.draw()
+fig2.savefig("../output/spec_examples.png", clobber=True)
