@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from utils import *
 
 # -- set the indices for comparison
-ind = np.array([215, 256, 297])
+ind = np.array([100, 215, 256, 297])
 
 # -- get scan conditions
 sc = get_scan_conditions().iloc[ind]
@@ -20,10 +20,11 @@ print("generating rgbs...")
 rgbs = [make_rgb8(i.data, i.waves) for i in cubes]
 
 # -- plot the three scans
-fig, ax = plt.subplots(3, 1, figsize=(5, 8))
+fig, ax = plt.subplots(2, 2, figsize=(10, 5))
 fig.subplots_adjust(0.05, 0.05, 0.95, 0.95)
-dum     = [i.axis("off") for i in ax]
-dum     = [i.imshow(j, aspect=0.45) for i, j in zip(ax, rgbs)]
+dum     = [i.axis("off") for j in ax for i in j]
+dum     = [i.imshow(j, aspect=0.45) for i, j in 
+           zip([n for m in ax for n in m], rgbs)]
 dum     = [i.set_title(j) for i, j in zip(ax, sc.time)]
 fig.canvas.draw()
 fig.savefig("../output/scan_examples.png", clobber=True)
